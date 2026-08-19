@@ -1,22 +1,24 @@
+#pragma once //to prevent multiple including of Task.h header file
 #include <iostream>
 #include "EmptyStackException.h"
+#include "Task.h"
 using namespace std;
 
-class Node{
+class StackNode{// Node class changed to StackNode to avoid confusion with QueueNode class in TaskQueue.h
 
 private:
 Task task;
-Node* next;
+StackNode* next;
 
 public:
-Node():task(),next(nullptr){}
-Node(Task t, Node* t_p = nullptr):task(t),next(t_p){}
+StackNode():task(),next(nullptr){}
+StackNode(Task t, StackNode* t_p = nullptr):task(t),next(t_p){}
 
 const Task& getTask() const{
 return task;
 }
 
-Node* getNext() const{
+StackNode* getNext() const{
 return next;
 }
 
@@ -24,9 +26,9 @@ void setTask(const Task& newTask) {
 task = newTask;
 }
 
-//next is declared as a Node pointer. 
-//But in setNext if it is set to const Node pointer, c++ wont allow const beside param
-void setNext(Node* t_n) {
+//next is declared as a StackNode pointer. 
+//But in setNext if it is set to const StackNode pointer, c++ wont allow const beside param
+void setNext(StackNode* t_n) {
 next = t_n;
 }
 
@@ -35,7 +37,7 @@ next = t_n;
 class TaskStack {
 
 private:
-Node* head;
+StackNode* head;
 int cursize;
 
 public:
@@ -45,7 +47,7 @@ TaskStack():head(nullptr),cursize(0){}
 
 ~TaskStack() {
 	while(head!= nullptr){
-		Node* a = head->getNext();
+		StackNode* a = head->getNext();
 		delete head;
 		head = a;
 	}
@@ -54,7 +56,7 @@ TaskStack():head(nullptr),cursize(0){}
 }
 
 void push(const Task& task){
-	Node* n1 = new Node(task);
+	StackNode* n1 = new StackNode(task);
 	n1->setNext(head);
 	head = n1;
 	cursize = cursize+1;
@@ -65,7 +67,7 @@ Task pop(){
 		throw EmptyStackException();
 	}
 	else{
-		Node* n2 = head->getNext();
+		StackNode* n2 = head->getNext();
 		Task t = head->getTask();
 		delete head;
 		cursize = cursize - 1;
@@ -96,7 +98,7 @@ string toString() const{
 	int n = size();
 	if(n==0)return "[]";
 	string s = "[";
-	Node* p = head;
+	StackNode* p = head;
 	while(p!= nullptr){
 		s = s + to_string(p->getTask().taskId);
 		if(p->getNext()!=nullptr){

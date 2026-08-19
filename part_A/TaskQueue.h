@@ -1,32 +1,38 @@
+#pragma once
 #include <iostream>
 #include "EmptyQueueException.h"
+#include "Task.h"
 using namespace std;
 
-class Node{
+class QueueNode{ // 
 
   private:
     Task task;
-    Node* next;
+    QueueNode* next;
 
   public:
-    Node():task(),next(nullptr){}
-    Node(Task t, Node* t_p = nullptr):task(t),next(t_p){}
 
+//constructors  
+    QueueNode():task(),next(nullptr){}
+    QueueNode(Task t, QueueNode* t_p = nullptr):task(t),next(t_p){}
+
+//getters
   const Task& getTask() const{
     return task;
   }
 
-  Node* getNext() const{
+  QueueNode* getNext() const{
     return next;
   }
 
+//setters
   void setTask(const Task& newTask) {
     task = newTask;
   }
 
-  //next is declared as a Node pointer. 
-  //But in setNext if it is set to const Node pointer, c++ wont allow const beside param
-  void setNext(Node* t_n) {
+  //next is declared as a QueueNode pointer. 
+  //But in setNext if it is set to const QueueNode pointer, c++ wont allow const beside param
+  void setNext(QueueNode* t_n) {
     next = t_n;
   }
 
@@ -34,21 +40,25 @@ class Node{
 
 class TaskQueue {
   private:
+    QueueNode* head;
+    QueueNode* tail;
     int cursize;
-    Node* head;
-    Node* tail;
+
   public:
+
+//constructors
+//order of of the constructor calls should be same as the order of declaration of the member variables in the class
     TaskQueue():head(nullptr),tail(nullptr),cursize(0){}
     ~TaskQueue(){
       while(head!=nullptr){
-        Node* a = head->getNext();
+        QueueNode* a = head->getNext();
         delete head;
         head = a;
       }
       cursize = 0;
     }
   void enqueue(const Task& task){
-    Node* n1 = new Node(task);
+    QueueNode* n1 = new QueueNode(task);
     if(isEmpty()){
       head = n1;
       tail = n1;
@@ -60,7 +70,7 @@ class TaskQueue {
     cursize = cursize+1;
   } // append
   void insertFirst(const Task& task){
-    Node* n1 = new Node(task);
+    QueueNode* n1 = new QueueNode(task);
     if(isEmpty()){
       head = n1;
       tail = n1;
@@ -76,7 +86,7 @@ class TaskQueue {
 		  throw EmptyQueueException();
 	  }
 	  else{
-		  Node* n2 = head->getNext();
+		  QueueNode* n2 = head->getNext();
 		  Task t = head->getTask();
 		  delete head;
 		  cursize = cursize - 1;
@@ -106,7 +116,7 @@ class TaskQueue {
   int n = size();
 	if(n==0)return "[]";
 	string s = "[";
-	Node* p = head;
+	QueueNode* p = head;
 	while(p!= nullptr){
 		s = s + to_string(p->getTask().taskId);
 		if(p->getNext()!=nullptr){

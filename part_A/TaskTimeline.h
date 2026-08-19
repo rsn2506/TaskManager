@@ -1,3 +1,5 @@
+#pragma once //to prevent multiple including of Task.h header file
+
 #include <iostream>
 #include "Task.h"
 #include "EmptyQueueException.h"
@@ -15,10 +17,10 @@ class DoubleNode{
     const Task& getTask() const{
       return task;
     }
-    DoubleNode* getprev() const{
+    DoubleNode* getPrev() const{
       return prev;
     }
-    DoubleNode* getnext() const{
+    DoubleNode* getNext() const{
       return next;
     }
     void setTask(const Task& t){
