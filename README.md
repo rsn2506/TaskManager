@@ -30,5 +30,31 @@ This project utilizes a `Makefile` for easy compilation. Ensure you have `g++` a
 
 ### Compiling the Project
 Navigate to the root directory and run:
-```bash
 make all
+
+This will generate the necessary object files and place the executable binaries inside a build directory.
+
+Running the Tests
+To verify the integrity of the data structures and routing logic:
+
+Bash - make run_tester
+Running the Simulation
+To run the main driver program against an input file:
+
+Bash - make run_panic
+(Note: The Makefile is configured to automatically feed sampleInputFile.txt into the simulation).
+
+Supported Commands
+The driver program parses a text file containing the following operation codes:
+
+1 <taskId> <priority>: RECEIVE a task and route it based on priority.
+
+2: PROCESS the next task in the inbox and move it to the timeline.
+
+3 <taskId>: DELETE a task from the timeline and push it to the undo stack.
+
+4 [taskId]: COMPLETE a task (permanently remove it). If no ID is provided, completes the front task on the timeline.
+
+5: UNDO the last deleted task, appending it back to the end of the timeline.
+
+6: PRINT the current state of the timeline.
